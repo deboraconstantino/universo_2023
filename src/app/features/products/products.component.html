@@ -1,0 +1,24 @@
+<po-page-dynamic-search
+    p-title="Meus produtos"
+    [p-actions]="actions"
+    [p-quick-search-width]="4"
+    [p-filters]="advancedFilters"
+    (p-quick-search)="onQuickSearch($event)"
+    (p-change-disclaimers)="onChangeDisclaimers($event)"
+    (p-advanced-search)="onAdvancedSearch($event)">
+
+    <po-table
+        [p-columns]="columns"
+        [p-items]="products.items"
+        [p-loading]="isLoadingProducts"
+        [p-show-more-disabled]="!products.hasNext"
+        [p-loading-show-more]="isLoadingProducts"
+        [p-actions]="tableActions"
+        (p-show-more)="showMore()">
+    </po-table>
+</po-page-dynamic-search>
+
+<po-modal #balanceModal p-title="Saldo" style="position: relative;">
+    <po-loading-overlay [hidden]="!isLoadingBalance"></po-loading-overlay>
+    <span *ngIf="!isLoadingBalance">{{ balance }}</span>
+</po-modal>
