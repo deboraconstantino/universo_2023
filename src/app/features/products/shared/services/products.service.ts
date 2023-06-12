@@ -21,6 +21,14 @@ export class ProductsService {
     return this.httpClient.get<ProAdapterBaseV2<Products>>(this.api, { params: parameters });
   }
 
+  post(body: Products): Observable<Products> {
+    return this.httpClient.post<Products>(this.api, body);
+  }
+
+  delete(id: string): Observable<any> {
+    return this.httpClient.delete<any>(`${this.api}/${id}`);
+  }
+
   checkBalance(productId: string): Observable<number> {
     return this.proJsToAdvplService.buildObservable<number>(
       ({protheusResponse, subscriber}: any) => {

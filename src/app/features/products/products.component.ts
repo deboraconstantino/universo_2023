@@ -1,9 +1,10 @@
 import { Products } from './shared/interfaces/products.interface';
-import { ProAdapterBaseV2 } from '@totvs/protheus-lib-core';
+import { ProAdapterBaseV2, ProJsToAdvplService } from '@totvs/protheus-lib-core';
 import { ProductsService } from './shared/services/products.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PoPageAction, PoTableColumn, PoNotificationService, PoDisclaimer, PoTableAction, PoModalComponent } from '@po-ui/ng-components';
+import { PoPageAction, PoTableColumn, PoNotificationService, PoDisclaimer, PoTableAction, PoModalComponent, PoDialogService } from '@po-ui/ng-components';
 import { PoPageDynamicSearchFilters } from '@po-ui/ng-templates';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -12,9 +13,7 @@ import { PoPageDynamicSearchFilters } from '@po-ui/ng-templates';
 })
 export class ProductsComponent implements OnInit {
   @ViewChild('balanceModal') balanceModal: PoModalComponent;
-  readonly actions: Array<PoPageAction> = [
-    { label: 'Novo', action: () => {} }
-  ];
+  actions: Array<PoPageAction>;
   readonly columns: Array<PoTableColumn> = [
     { property: 'branch', label: 'Filial' },
     { property: 'id', label: 'Código' },
@@ -33,8 +32,8 @@ export class ProductsComponent implements OnInit {
   ];
   readonly tableActions: Array<PoTableAction> = [
     { label: 'Alterar', action: () => {} },
-    { label: 'Excluir', action: () => {} },
-    { label: 'Consultar saldo', action: (row: Products) => this.openBalanceModal(row.id) }
+    { label: 'Excluir', action: (row: Products) => this.confirmDelete(row.id) },
+    { label: 'Consultar saldo', action: (row: Products) => this.alertCheckBalance(row.id) }
   ];
   isLoadingProducts: boolean = true;
   products: ProAdapterBaseV2<Products> = {
@@ -45,15 +44,25 @@ export class ProductsComponent implements OnInit {
   page: number = 1;
   filter: string = '';
   balance: number = 0;
-  isLoadingBalance: boolean = true;
+  isLoadingBalance: boolean = false;
 
   constructor(
     private productsService: ProductsService,
-    private poNotificationService: PoNotificationService
+    private poNotificationService: PoNotificationService,
+    private poDialogService: PoDialogService,
+    private proJsToAdvplService: ProJsToAdvplService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.actions = this.getActions();
     this.getProducts(1);
+  }
+
+  getActions(): Array<PoPageAction> {
+    return [
+      { label: 'Novo', action: () => this.router.navigate(['new']) }
+    ];
   }
 
   getProducts(page: number, filter?: string): void {
@@ -129,6 +138,7 @@ export class ProductsComponent implements OnInit {
   }
 
   checkBalance(productId: string): void {
+    this.isLoadingBalance = true;
     this.productsService.checkBalance(productId).subscribe({
       next: (balance: number) => { this.balance = balance; this.isLoadingBalance = false; },
       error: () => { this.isLoadingBalance = false; this.poNotificationService.error('Falha ao consultar saldo do produto') }
@@ -139,5 +149,40 @@ export class ProductsComponent implements OnInit {
     this.productsService.getParam('MV_TPSALDO');
     this.balanceModal.open();
     this.checkBalance(productId);
+  }
+
+  alertCheckBalance(productId: string): void {
+    if (this.proJsToAdvplService.protheusConnected()) {
+      this.openBalanceModal(productId);
+    } else {
+      this.poDialogService.alert({
+        title: 'Atenção',
+        message: 'Não é possível consultar o saldo do produto, pois o aplicativo não está sendo executado pelo Protheus. Para prosseguir, abra o aplicativo pelo Protheus.'
+      });
+    };
+  }
+
+  confirmDelete(productId: string): void {
+    this.poDialogService.confirm({
+      title: 'Confirmar',
+      message: 'Tem certeza que deseja excluir o produto? Essa ação não poderá ser desfeita.',
+      confirm: () => this.delete(productId) 
+    });
+  }
+
+  delete(productId: string): void {
+    this.isLoadingProducts = true;
+    this.productsService.delete(productId).subscribe({
+      next: () => {
+        this.isLoadingProducts = false;
+        this.page = 1;
+        this.poNotificationService.success('Registro escluído com sucesso.');
+        this.getProducts(1, this.filter);
+      },
+      error: (error: any) => {
+        this.isLoadingProducts = false;
+        this.poNotificationService.error(`Falha ao excluir produto: ${error.error.message}`);
+      }
+    })
   }
 }

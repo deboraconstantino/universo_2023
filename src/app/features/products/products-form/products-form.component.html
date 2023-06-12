@@ -1,1 +1,11 @@
+<po-page-default
+    p-title="Incluir produto"
+    [p-actions]="actions">
 
+    <po-container class="po-xl-10 po-lg-10 po-md-10 po-offset-xl-1 po-offset-lg-1 po-offset-md-1">
+        <po-dynamic-form
+            [p-fields]="fields"
+            (p-form)="setForm($event)">
+        </po-dynamic-form>
+    </po-container>
+</po-page-default>
