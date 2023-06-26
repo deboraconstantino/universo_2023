@@ -21,8 +21,16 @@ export class ProductsService {
     return this.httpClient.get<ProAdapterBaseV2<Products>>(this.api, { params: parameters });
   }
 
+  getById(productId: string): Observable<Products> {
+    return this.httpClient.get<Products>(`${this.api}/${productId}`);
+  }
+
   post(body: Products): Observable<Products> {
     return this.httpClient.post<Products>(this.api, body);
+  }
+
+  put(productId: string, body: Products): Observable<Products> {
+    return this.httpClient.put<Products>(`${this.api}/${productId}`, body);
   }
 
   delete(id: string): Observable<any> {

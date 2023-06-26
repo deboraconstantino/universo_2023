@@ -21,7 +21,7 @@
     "@po-ui/ng-components": "^14.12.2",
     "@po-ui/ng-templates": "14.12.2",
     "@totvs/po-theme": "^14.12.2",
-    "@totvs/protheus-lib-core": "^14.1.3",
+    "@totvs/protheus-lib-core": "^14.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

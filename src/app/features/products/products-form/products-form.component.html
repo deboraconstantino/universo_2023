@@ -1,10 +1,13 @@
 <po-page-default
-    p-title="Incluir produto"
-    [p-actions]="actions">
+    [p-title]="title"
+    [p-actions]="actions"
+    [p-breadcrumb]="breadcrumb">
 
-    <po-container class="po-xl-10 po-lg-10 po-md-10 po-offset-xl-1 po-offset-lg-1 po-offset-md-1">
-        <po-dynamic-form
+    <po-container class="po-xl-10 po-lg-10 po-md-10 po-offset-xl-1 po-offset-lg-1 po-offset-md-1" style="position: relative;">
+        <po-loading-overlay [hidden]="!isLoading"></po-loading-overlay>
+        <po-dynamic-form *ngIf="!isLoading"
             [p-fields]="fields"
+            [p-value]="value"
             (p-form)="setForm($event)">
         </po-dynamic-form>
     </po-container>

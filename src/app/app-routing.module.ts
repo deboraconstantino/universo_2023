@@ -7,7 +7,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'index.html', pathMatch: 'full' },
   { path: 'index.html', redirectTo: '', pathMatch: 'full' },
   { path: '', component: ProductsComponent },
-  { path: 'new', component: ProductsFormComponent }
+  { path: 'new', component: ProductsFormComponent },
+  { path: 'edit/:id', component: ProductsFormComponent }
 ];
 
 @NgModule({

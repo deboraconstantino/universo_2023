@@ -31,7 +31,7 @@ export class ProductsComponent implements OnInit {
     { property: 'description', label: 'Descrição' }
   ];
   readonly tableActions: Array<PoTableAction> = [
-    { label: 'Alterar', action: () => {} },
+    { label: 'Alterar', action: (row: Products) => this.goToProductsForm(row.id) },
     { label: 'Excluir', action: (row: Products) => this.confirmDelete(row.id) },
     { label: 'Consultar saldo', action: (row: Products) => this.alertCheckBalance(row.id) }
   ];
@@ -57,6 +57,10 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.actions = this.getActions();
     this.getProducts(1);
+  }
+
+  goToProductsForm(productId: string): void {
+    this.router.navigate(['edit', productId]);
   }
 
   getActions(): Array<PoPageAction> {

@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
   };
   profileActions: Array<PoToolbarAction> = [
     { action: this.openUserModal.bind(this), label: 'Visualizar detalhes', icon: 'po-icon-eye' },
-    { action: () => {}, label: 'Trocar de filial', icon: 'po-icon-company' },
     { action: this.closeApp.bind(this), label: 'Sair', icon: 'po-icon-exit' }
   ];
   user: ProUserInfo;
