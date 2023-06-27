@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PoToolbarProfile, PoToolbarAction, PoModalComponent } from '@po-ui/ng-components';
-import { ProAppConfigService, ProThreadInfoService, ProUserInfo } from '@totvs/protheus-lib-core';
+import { PoToolbarProfile, PoToolbarAction, PoModalComponent, PoMenuItem } from '@po-ui/ng-components';
+import { ProAppConfigService, ProThreadInfoService, ProUserInfo, ProUserInfoService } from '@totvs/protheus-lib-core';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +19,11 @@ export class AppComponent implements OnInit {
     { action: this.closeApp.bind(this), label: 'Sair', icon: 'po-icon-exit' }
   ];
   user: ProUserInfo;
+
+  readonly menus: Array<PoMenuItem> = [
+    { label: 'Home', link: '/', shortLabel: 'Home', icon: 'po-icon-home' },
+    { label: 'Exemplos', link: 'examples', shortLabel: 'Exemplos', icon: 'po-icon-grid' },
+  ];
 
   constructor(
     private proAppConfigService: ProAppConfigService,

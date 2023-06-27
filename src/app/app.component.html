@@ -1,13 +1,20 @@
-<po-loading-overlay [hidden]="!isLoading"></po-loading-overlay>
+<div class="po-wrapper">
+  <po-loading-overlay [hidden]="!isLoading"></po-loading-overlay>
 
-<div *ngIf="!isLoading">
-  <po-toolbar
-    p-title="Po-ui x Protheus"
-    [p-profile]="profile"
-    [p-profile-actions]="profileActions">
-  </po-toolbar>
+  <po-menu
+    [p-collapsed]="true"
+    [p-menus]="menus">
+  </po-menu>
 
-  <router-outlet></router-outlet>
+  <div *ngIf="!isLoading">
+    <po-toolbar
+      p-title="Po-ui x Protheus"
+      [p-profile]="profile"
+      [p-profile-actions]="profileActions">
+    </po-toolbar>
+
+    <router-outlet></router-outlet>
+  </div>
 </div>
 
 <po-modal #userModal p-title="Detalhes do usuário" *ngIf="user">

@@ -8,12 +8,15 @@ import { RouterModule } from '@angular/router';
 import { ProductsComponent } from './features/products/products.component';
 import { PoTemplatesModule } from '@po-ui/ng-templates';
 import { ProductsFormComponent } from './features/products/products-form/products-form.component';
+import { ExamplesComponent } from './features/examples/examples.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductsComponent,
-    ProductsFormComponent
+    ProductsFormComponent,
+    ExamplesComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +24,8 @@ import { ProductsFormComponent } from './features/products/products-form/product
     PoModule,
     RouterModule.forRoot([]),
     PoTemplatesModule,
-    ProtheusLibCoreModule
+    ProtheusLibCoreModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
